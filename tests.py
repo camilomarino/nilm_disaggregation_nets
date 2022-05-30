@@ -5,7 +5,7 @@ import torch
 
 import nets
 
-### NEURAL NILM ###
+# ### NEURAL NILM ###
 in_channels = [i for i in range(1, 6)]
 out_channels = [i for i in range(1, 6)]
 sequence_length = [i * 10 for i in range(2, 10)]
@@ -19,6 +19,23 @@ batch_size = [i * 10 for i in range(1, 6)]
 def test_NeuralNilmDAE(in_channels, out_channels, sequence_length, batch_size):
 
     net = nets.NeuralNilmDAE(
+        sequence_length=sequence_length,
+        in_channels=in_channels,
+        out_channels=out_channels,
+    )
+    x = torch.empty((batch_size, in_channels, sequence_length))
+    y = net(x)
+
+    assert list(y.shape) == [batch_size, out_channels, sequence_length]
+
+
+@pytest.mark.parametrize(
+    "in_channels,out_channels,sequence_length,batch_size",
+    list(product(in_channels, out_channels, sequence_length, batch_size)),
+)
+def test_NeuralNilmBiLSTM(in_channels, out_channels, sequence_length, batch_size):
+
+    net = nets.NeuralNilmBiLSTM(
         sequence_length=sequence_length,
         in_channels=in_channels,
         out_channels=out_channels,

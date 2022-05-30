@@ -40,6 +40,45 @@ class NeuralNilmDAE(nn.Module):
         return x
 
 
+class NeuralNilmBiLSTM(nn.Module):
+    def __init__(
+        self, sequence_length: int, in_channels: int = 1, out_channels: int = 1,
+    ):
+        super().__init__()
+        self.name = "NeuralNilmBiLSTM"
+        self.sequence_length = sequence_length
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+
+        self.conv_1 = nn.Conv1d(
+            in_channels=in_channels, out_channels=16, kernel_size=4, padding="same"
+        )
+
+        self.lstm_1 = nn.LSTM(
+            input_size=16, hidden_size=64, batch_first=True, bidirectional=True
+        )
+        self.lstm_2 = nn.LSTM(
+            input_size=128, hidden_size=128, batch_first=True, bidirectional=True
+        )
+
+        self.fc_1 = nn.Sequential(nn.Linear(256, 128), nn.Tanh())
+        self.fc_2 = nn.Linear(128, out_channels)
+
+    def forward(self, x):
+        # x: batch_size x in_channels x input_length
+        x = self.conv_1(x)  # batch_size x 16 x input_length
+
+        x = x.transpose(1, 2)  # batch_size x input_length x 16
+        x, _ = self.lstm_1(x)  # batch_size x input_length x 64*2
+        x, _ = self.lstm_2(x)  # batch_size x input_length x 128*2
+
+        x = self.fc_1(x)  # batch_size x input_length x 128
+        x = self.fc_2(x)  # batch_size x input_length x out_channels
+
+        x = x.transpose(1, 2)  # batch_size x out_channels x input_length
+        return x
+
+
 class SeqToBase(nn.Module):
     def __init__(self, input_length: int, in_channels: int = 1):
         super().__init__()
