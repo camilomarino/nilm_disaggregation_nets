@@ -1,4 +1,16 @@
 ## Arquitecturas de red neuronal clasicas
+
+### Instalación
+
+```bash
+pip install git+ssh://git@github.com/camilomarino/nilm_disaggregation_nets.git@main
+```
+or
+```bash
+pip install git+https://github.com/camilomarino/nilm_disaggregation_nets.git@main
+```
+
+### Arquitecturas
 Contiene:
 - NeuralNilmDAE: https://arxiv.org/abs/1507.06594
 - Sequence-to-point and Sequence-to-sequence: https://arxiv.org/abs/1507.06594

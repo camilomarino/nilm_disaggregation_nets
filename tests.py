@@ -3,7 +3,7 @@ from itertools import product
 import pytest
 import torch
 
-import nets
+import nilm_disaggregation_nets as nets
 
 # ### NEURAL NILM ###
 in_channels = [i for i in range(1, 6)]
@@ -86,7 +86,7 @@ def test_SeqToSeq(in_channels, out_channels, input_length, batch_size):
     "in_channels,out_channels,input_length,batch_size",
     list(product(in_channels, out_channels, input_length, batch_size)),
 )
-def test_SeqToPoin(in_channels, out_channels, input_length, batch_size):
+def test_SeqToPoint(in_channels, out_channels, input_length, batch_size):
 
     net = nets.SeqToPoint(
         input_length=input_length, in_channels=in_channels, out_channels=out_channels,
