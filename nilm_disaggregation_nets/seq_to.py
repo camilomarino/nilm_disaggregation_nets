@@ -1,6 +1,6 @@
 """
 Sequence-to-point and Sequence-to-sequence
-https://arxiv.org/abs/1507.06594
+https://dl.acm.org/doi/10.1145/3427771.3427857
 """
 
 from torch import nn
